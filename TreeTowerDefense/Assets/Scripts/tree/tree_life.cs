@@ -18,7 +18,10 @@ public class tree_life : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(currentHP <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void takeDamage()
