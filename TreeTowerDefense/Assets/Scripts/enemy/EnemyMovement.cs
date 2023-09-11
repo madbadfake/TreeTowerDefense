@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
+    //particle
+    [SerializeField] ParticleSystem impactLeaves;
 
     //enemy
     public float speed = 10f;
@@ -52,6 +54,13 @@ public class EnemyMovement : MonoBehaviour
 
     void dealDamage(int damage)
     {
+        GameObject particleArea = GameObject.Find("ParticleArea");
+        if (particleArea != null)
+        {
+            Vector3 particleAreaPosition = particleArea.transform.position; // Position des "ParticleArea"-Objekts holen
+            ParticleSystem newImpactLeaves = Instantiate(impactLeaves, particleAreaPosition, particleArea.transform.rotation); // Partikelsystem am "ParticleArea" spawnen
+            newImpactLeaves.Play(); // Partikelsystem starten
+        }
         tree.GetComponent<tree_life>().currentHP -= damage;
     }
 }

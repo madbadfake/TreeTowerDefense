@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafe15d1a6338f448bc3a0865681c392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  impactLeaves: {fileID: 117862690884122993, guid: fec2f2eda16856e4d9cc2dcfd56e5813, type: 3}
   speed: 10
   damage: 1
   health: 1
