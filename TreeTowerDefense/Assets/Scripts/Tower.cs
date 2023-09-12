@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class Tower : MonoBehaviour
@@ -61,13 +63,19 @@ public class Tower : MonoBehaviour
             }
         }
 
-        if (nearestEnemy != null&& shortestDistance <= range)
+        if (nearestEnemy != null&& fireCountdown <= 0)
         {
+            target = nearestEnemy.transform;
             Shoot();
 
         }
+        else
+        {
+            target = null;
+        }
     }
 
+    //rangeindicator
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -78,7 +86,19 @@ public class Tower : MonoBehaviour
     {
         target = nearestEnemy.transform;
 
-        Destroy(nearestEnemy);
-        Instantiate(projectile, transform.position, Quaternion.identity);
+        GameObject bulletGO = (GameObject)Instantiate(projectile, transform.position, Quaternion.identity);
+        ProjectileMovement bullet = bulletGO.GetComponent<ProjectileMovement>();
+
+
+        if (bullet != null )
+        {
+
+            bullet.Seek(target);
+        }
+        
+        //Destroy(nearestEnemy);
+        
+
+       
     }
 }
