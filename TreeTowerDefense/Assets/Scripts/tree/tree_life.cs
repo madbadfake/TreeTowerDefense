@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class tree_life : MonoBehaviour
 {
     public int maxHP;
     public int currentHP;
+
+    // ---------------- UI ----------------
+
+    [SerializeField] private Image hpBarFill;
 
 
     // Start is called before the first frame update
@@ -13,6 +18,8 @@ public class tree_life : MonoBehaviour
     {
         maxHP = 20;
         currentHP = maxHP;
+
+        hpBarFill.fillAmount = currentHP;
     }
 
     // Update is called once per frame
@@ -24,8 +31,10 @@ public class tree_life : MonoBehaviour
         }
     }
 
-    public void takeDamage()
+    public void UpdateHPBar()
     {
-
+        float fillAmount = (float)currentHP / maxHP;
+        hpBarFill.fillAmount = fillAmount;
+        Debug.Log("HP Bar updated. fillAmount: " + fillAmount);
     }
 }

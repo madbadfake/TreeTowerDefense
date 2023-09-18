@@ -62,5 +62,6 @@ public class EnemyMovement : MonoBehaviour
             newImpactLeaves.Play(); // Partikelsystem starten
         }
         tree.GetComponent<tree_life>().currentHP -= damage;
+        tree.GetComponent<tree_life>().UpdateHPBar();
     }
 }
