@@ -113,5 +113,5 @@ MonoBehaviour:
   impactLeaves: {fileID: 117862690884122993, guid: fec2f2eda16856e4d9cc2dcfd56e5813, type: 3}
   speed: 10
   damage: 1
-  health: 1
+  health: 5
   tree: {fileID: 0}

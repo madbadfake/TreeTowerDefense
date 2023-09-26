@@ -6,13 +6,14 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    public Transform target;
+    public GameObject target;
 
     [Header("Attributes")]
 
-    [SerializeField] private float range = 15f;
-    [SerializeField] private float fireRate = 1f;
-    [SerializeField] private float fireCountdown = 0f;
+    [SerializeField] private float range = 5f;
+    //[SerializeField] private float fireRate = 1f;
+    [SerializeField] private float fireCD = 3f;
+    [SerializeField] private float fireTimer = 0f;
 
     [Header("UnitySetup")]
 
@@ -26,23 +27,25 @@ public class Tower : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        fireTimer= 3f;
         InvokeRepeating("UpdateTarget", 0f, 0.01f);
     }
 
     // Update is called once per frame
     void Update()
     {
+        fireTimer -= Time.deltaTime; 
         //if theres no target, dont do anything
         if (target == null)
             return;
 
-        if (fireCountdown <= 0f)
+        if (fireTimer <= 0f)
         {
             Shoot();
-            fireCountdown = 1f / fireRate;
+            
         }
 
-        fireCountdown -= Time.deltaTime;
+        
     }
 
     private void UpdateTarget()
@@ -54,19 +57,25 @@ public class Tower : MonoBehaviour
         //get closest enemy
         foreach (GameObject enemy in enemies)
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
             
-            if (distanceToEnemy < shortestDistance )
+            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+
+            if (distanceToEnemy <= range)
             {
-                shortestDistance = distanceToEnemy;
-                nearestEnemy= enemy;
+                if (distanceToEnemy < shortestDistance)
+                {
+                    shortestDistance = distanceToEnemy;
+                    nearestEnemy = enemy;
+                    //Debug.Log("FOund enemy");
+                }
             }
+          
         }
 
-        if (nearestEnemy != null&& fireCountdown <= 0)
+        if (nearestEnemy != null&& fireTimer <= 0)
         {
-            target = nearestEnemy.transform;
-            Shoot();
+            target = nearestEnemy.gameObject;
+
 
         }
         else
@@ -84,7 +93,7 @@ public class Tower : MonoBehaviour
 
     void Shoot()
     {
-        target = nearestEnemy.transform;
+        Debug.Log("Shooting");
 
         GameObject bulletGO = (GameObject)Instantiate(projectile, transform.position, Quaternion.identity);
         ProjectileMovement bullet = bulletGO.GetComponent<ProjectileMovement>();
@@ -93,12 +102,14 @@ public class Tower : MonoBehaviour
         if (bullet != null )
         {
 
-            bullet.Seek(target);
+            bullet.Seek(target.transform);
         }
-        
-        //Destroy(nearestEnemy);
-        
 
-       
+        //Destroy(nearestEnemy);
+
+        nearestEnemy = null;
+        fireTimer= fireCD;
+
+
     }
 }

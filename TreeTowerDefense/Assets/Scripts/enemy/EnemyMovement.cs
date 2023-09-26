@@ -9,8 +9,8 @@ public class EnemyMovement : MonoBehaviour
 
     //enemy
     public float speed = 10f;
-    public int damage = 1;
-    public int health = 1;
+    public float damage = 1;
+    public float health = 1;
 
     //waypoints
     private Transform target;
@@ -24,6 +24,7 @@ public class EnemyMovement : MonoBehaviour
         target = waypoints.points[0]; //spawnpoint
         tree = GameObject.Find("Base");
 
+
     }
 
     private void Update()
@@ -36,6 +37,8 @@ public class EnemyMovement : MonoBehaviour
         {
             GetNextWaypoint();
         }
+
+
     }
 
     //functions
@@ -52,7 +55,7 @@ public class EnemyMovement : MonoBehaviour
         target = waypoints.points[waypointIndex];
     }
 
-    void dealDamage(int damage)
+    void dealDamage(float damage)
     {
         GameObject particleArea = GameObject.Find("ParticleArea");
         if (particleArea != null)
@@ -63,5 +66,18 @@ public class EnemyMovement : MonoBehaviour
         }
         tree.GetComponent<tree_life>().currentHP -= damage;
         tree.GetComponent<tree_life>().UpdateHPBar();
+    }
+
+    public void TakeDamage(float damageTaken)
+    {
+        health -= damageTaken;
+
+        if(health <= 0)
+        {
+            Destroy(gameObject);
+        }
+
+
+
     }
 }

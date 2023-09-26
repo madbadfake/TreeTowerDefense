@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class tree_life : MonoBehaviour
 {
-    public int maxHP;
-    public int currentHP;
+    public float maxHP;
+    public float currentHP;
 
     // ---------------- UI ----------------
 
