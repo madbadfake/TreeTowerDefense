@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     // ---------------- KEY BINDS ----------------
     public KeyCode jumpKey = KeyCode.Space;
+    public KeyCode buildKey= KeyCode.E;
 
 
     // ---------------- GROUND CHECK ----------------
@@ -33,7 +35,15 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody rb;
 
-    
+    // ---------------- Tower ----------------
+
+    [SerializeField] GameObject towerPrefab;
+
+    // ---------------- Camera ----------------
+
+    private CinemachineVirtualCamera virtualCamera;
+    private Camera mainCamera;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +51,14 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
 
         readyToJump = true;
+
+        // find camera
+
+        //virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+        mainCamera = Camera.main;
+
+
+
     }
 
     // Update is called once per frame
@@ -80,7 +98,27 @@ public class PlayerMovement : MonoBehaviour
             Jump();
 
             Invoke(nameof(ResetJump), jumpCooldown);
+
+           
         }
+
+        // build
+        if(Input.GetKey(buildKey))
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if(Physics.Raycast(ray, out hit))
+            {
+                if(hit.transform.CompareTag("whatIsGround"))
+                {
+                    Vector3 towerPosition = hit.point;
+                    InstantiateTower(towerPosition);
+                }
+            }
+        }
+
+        
     }
 
     private void MovePlayer()
@@ -98,6 +136,11 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(moveDirection.normalized * movespeed * 10f * airMultiplier, ForceMode.Force);
         }
+    }
+
+    private void InstantiateTower(Vector3 position)
+    {
+        Instantiate(towerPrefab, position, Quaternion.identity);
     }
 
     private void SpeedControl()
