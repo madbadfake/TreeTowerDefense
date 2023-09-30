@@ -50,6 +50,10 @@ public class PlayerMovement : MonoBehaviour
     private CinemachineVirtualCamera virtualCamera;
     private Camera mainCamera;
 
+    // ---------------- Collectibles ----------------
+
+    public float currentXp = 0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -146,6 +150,15 @@ public class PlayerMovement : MonoBehaviour
                     if (hit.transform.CompareTag("whatIsGround") | hit.transform.CompareTag("buildingZone")) //if hit ground
                     {
                         towerIndicator.transform.position = towerPosition;
+
+                        if (hit.transform.CompareTag("buildingZone"))
+                        {
+                            canPlaceTower= true;
+                        }
+                        else
+                    {
+                        canPlaceTower = false;
+                    }
                     }
                 }
             if (Input.GetKeyDown(KeyCode.Mouse1)) //close when right mouse button
@@ -161,17 +174,7 @@ public class PlayerMovement : MonoBehaviour
                 placeTower(towerIndicator.transform);
 
             }
- 
-
-
-        }
-            
-            
-            
-           
-        
-
-        
+        }  
     }
 
     private void MovePlayer()
@@ -227,21 +230,23 @@ public class PlayerMovement : MonoBehaviour
         towerIndicator.SetActive(false);
     }
 
-    void OnTriggerEnter(Collider other)
+    private void CollectXp()
     {
-        if (other.CompareTag(buildingZoneTag))
-        {
-            // Tower has entered the building zone, disallow placement
-            canPlaceTower = true;
-        }
+        currentXp += 1f;
+        Debug.Log("Current Xp:" + currentXp);
     }
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(buildingZoneTag))
+        if(other.CompareTag("Collectible"))
         {
-            // Tower has exited the building zone, allow placement
-            canPlaceTower = false;
+            CollectXp();
+            Destroy(other.gameObject);
         }
     }
+    public float GetCurrentXp()
+    {
+        return currentXp;
+    }
+
 }

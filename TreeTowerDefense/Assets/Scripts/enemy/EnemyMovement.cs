@@ -22,6 +22,7 @@ public class EnemyMovement : MonoBehaviour
 
     [SerializeField] GameObject xp;
     [SerializeField] private float xpValue = 5f;
+    public float xpRadius = 2.0f;
 
 
     private void Start()
@@ -90,9 +91,28 @@ public class EnemyMovement : MonoBehaviour
 
     private void SpawnXP()
     {
-        for(float i = 5; i >= 0; i--)
-        {
             Instantiate(xp, transform.position, Quaternion.identity);
+            DropXPInCircle();
+
+    }
+
+    private void DropXPInCircle()
+    {
+
+
+        float angleStep = 360f / xpValue;
+
+        for (int i = 0; i < xpValue; i++)
+        {
+            float angle = i * angleStep;
+            float radians = angle * Mathf.Deg2Rad;
+
+            float xOffset = Mathf.Cos(radians) * xpRadius;
+            float zOffset = Mathf.Sin(radians) * xpRadius;
+
+            Vector3 spawnPosition = transform.position + new Vector3(xOffset, 0, zOffset);
+
+            Instantiate(xp, spawnPosition, Quaternion.identity);
         }
     }
 }
