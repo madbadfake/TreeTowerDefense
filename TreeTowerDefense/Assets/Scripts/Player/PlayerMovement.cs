@@ -2,7 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -38,6 +38,9 @@ public class PlayerMovement : MonoBehaviour
     // ---------------- Tower ----------------
 
     [SerializeField] GameObject towerPrefab;
+    //building
+    [SerializeField] GameObject towerIndicator;
+    private bool isPlacingTower = false;
 
     // ---------------- Camera ----------------
 
@@ -56,6 +59,10 @@ public class PlayerMovement : MonoBehaviour
 
         //virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         mainCamera = Camera.main;
+
+        //setup toowerIndicator
+        towerIndicator = Instantiate(towerIndicator);
+        towerIndicator.SetActive(false);
 
 
 
@@ -103,20 +110,62 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // build
-        if(Input.GetKey(buildKey))
+        if (Input.GetKeyDown(buildKey))
         {
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
 
-            if(Physics.Raycast(ray, out hit))
+            if (!isPlacingTower)
             {
-                if(hit.transform.CompareTag("whatIsGround"))
-                {
-                    Vector3 towerPosition = hit.point;
-                    InstantiateTower(towerPosition);
-                }
+                isPlacingTower = true; // open 
+                towerIndicator.SetActive(true);
             }
+            else
+            {
+                
+                isPlacingTower = false;
+                towerIndicator.SetActive(false);
+
+            }
+
         }
+
+        if (isPlacingTower)
+        {
+
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.transform.CompareTag("whatIsGround"))
+                    {
+                        Vector3 towerPosition = hit.point;
+                        towerIndicator.transform.position = towerPosition;
+                    }
+                }
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                isPlacingTower = false;
+                towerIndicator.SetActive(false);
+
+            }
+
+
+
+            if (isPlacingTower && Input.GetKeyDown(KeyCode.Mouse0))
+
+            {
+                placeTower(towerIndicator.transform);
+
+            }
+ 
+
+
+        }
+            
+            
+            
+           
+        
 
         
     }
@@ -164,5 +213,13 @@ public class PlayerMovement : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
+    }
+
+    private void placeTower(Transform pos)
+    {
+        Instantiate(towerPrefab, pos.position, Quaternion.identity);
+
+        isPlacingTower = false;
+        towerIndicator.SetActive(false);
     }
 }

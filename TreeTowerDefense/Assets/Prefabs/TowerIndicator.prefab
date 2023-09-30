@@ -344,9 +344,8 @@ GameObject:
   - component: {fileID: 8267173398245443064}
   - component: {fileID: 6151373032061038898}
   - component: {fileID: 4800701481262932767}
-  - component: {fileID: -3286982317300347945}
   m_Layer: 0
-  m_Name: Tower_Shroom
+  m_Name: TowerIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -440,20 +439,6 @@ MonoBehaviour:
   fireCD: 3
   fireTimer: 0
   projectile: {fileID: 1301458947030459575, guid: 5f9277006ad09d844bd1ba386f02bde5, type: 3}
---- !u!64 &-3286982317300347945
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5647211972333523175}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 7307461032032628575, guid: 5a788d60a413dd94c86fef34ffa09f3a, type: 3}
 --- !u!1 &8012796796418907548
 GameObject:
   m_ObjectHideFlags: 0
