@@ -18,6 +18,11 @@ public class EnemyMovement : MonoBehaviour
 
     public GameObject tree;
 
+    //Expierence
+
+    [SerializeField] GameObject xp;
+    [SerializeField] private float xpValue = 5f;
+
 
     private void Start()
     {
@@ -74,10 +79,20 @@ public class EnemyMovement : MonoBehaviour
 
         if(health <= 0)
         {
+
             Destroy(gameObject);
+            SpawnXP();
         }
 
 
 
+    }
+
+    private void SpawnXP()
+    {
+        for(float i = 5; i >= 0; i--)
+        {
+            Instantiate(xp, transform.position, Quaternion.identity);
+        }
     }
 }

@@ -115,3 +115,5 @@ MonoBehaviour:
   damage: 2
   health: 1
   tree: {fileID: 0}
+  xp: {fileID: 8192786682848849239, guid: 0d9213eb78337a54a89f075deb03557c, type: 3}
+  xpValue: 2

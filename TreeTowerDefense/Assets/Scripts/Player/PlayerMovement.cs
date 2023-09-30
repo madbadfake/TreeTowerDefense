@@ -41,6 +41,9 @@ public class PlayerMovement : MonoBehaviour
     //building
     [SerializeField] GameObject towerIndicator;
     private bool isPlacingTower = false;
+    private bool canPlaceTower = false;
+
+    private string buildingZoneTag = "buildingZone";
 
     // ---------------- Camera ----------------
 
@@ -110,15 +113,16 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // build
-        if (Input.GetKeyDown(buildKey))
+        
+        if (Input.GetKeyDown(buildKey)) //if pressing button
         {
 
-            if (!isPlacingTower)
+            if (!isPlacingTower) // if building view not active, open building view
             {
                 isPlacingTower = true; // open 
                 towerIndicator.SetActive(true);
             }
-            else
+            else // stop building view
             {
                 
                 isPlacingTower = false;
@@ -128,30 +132,30 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        if (isPlacingTower)
+        if (isPlacingTower) //if building view active
         {
-
+            //create raycast
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
 
-                if (Physics.Raycast(ray, out hit))
+                if (Physics.Raycast(ray, out hit)) //if hit
                 {
-                    if (hit.transform.CompareTag("whatIsGround"))
+                    Vector3 towerPosition = hit.point;
+                    Terrain terrain = hit.transform.GetComponent<Terrain>();
+
+                    if (hit.transform.CompareTag("whatIsGround") | hit.transform.CompareTag("buildingZone")) //if hit ground
                     {
-                        Vector3 towerPosition = hit.point;
                         towerIndicator.transform.position = towerPosition;
                     }
                 }
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (Input.GetKeyDown(KeyCode.Mouse1)) //close when right mouse button
             {
                 isPlacingTower = false;
                 towerIndicator.SetActive(false);
 
             }
 
-
-
-            if (isPlacingTower && Input.GetKeyDown(KeyCode.Mouse0))
+            if (canPlaceTower && Input.GetKeyDown(KeyCode.Mouse0)) //build if mouse left
 
             {
                 placeTower(towerIndicator.transform);
@@ -221,5 +225,23 @@ public class PlayerMovement : MonoBehaviour
 
         isPlacingTower = false;
         towerIndicator.SetActive(false);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag(buildingZoneTag))
+        {
+            // Tower has entered the building zone, disallow placement
+            canPlaceTower = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag(buildingZoneTag))
+        {
+            // Tower has exited the building zone, allow placement
+            canPlaceTower = false;
+        }
     }
 }
