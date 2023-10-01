@@ -8,6 +8,7 @@ TagManager:
   - whatIsGround
   - buildingZone
   - Collectible
+  - tower
   layers:
   - Default
   - TransparentFX

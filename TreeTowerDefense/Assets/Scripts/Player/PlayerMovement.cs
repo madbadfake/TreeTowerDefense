@@ -45,6 +45,12 @@ public class PlayerMovement : MonoBehaviour
 
     private string buildingZoneTag = "buildingZone";
 
+    //upgrading
+    private bool isUpgrading = false;
+    private bool canUpgrade = false;
+
+    GameObject upgradeUI;
+
     // ---------------- Camera ----------------
 
     private CinemachineVirtualCamera virtualCamera;
@@ -70,6 +76,10 @@ public class PlayerMovement : MonoBehaviour
         //setup toowerIndicator
         towerIndicator = Instantiate(towerIndicator);
         towerIndicator.SetActive(false);
+
+        //upgradeUI 
+        upgradeUI = GameObject.Find("UpgradeCanvas");
+        upgradeUI.SetActive(false);
 
 
 
@@ -140,27 +150,27 @@ public class PlayerMovement : MonoBehaviour
         {
             //create raycast
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
+            RaycastHit hit;
 
-                if (Physics.Raycast(ray, out hit)) //if hit
+            if (Physics.Raycast(ray, out hit)) //if hit
+            {
+                Vector3 towerPosition = hit.point;
+                Terrain terrain = hit.transform.GetComponent<Terrain>();
+
+                if (hit.transform.CompareTag("whatIsGround") | hit.transform.CompareTag("buildingZone")) //if hit ground
                 {
-                    Vector3 towerPosition = hit.point;
-                    Terrain terrain = hit.transform.GetComponent<Terrain>();
+                    towerIndicator.transform.position = towerPosition;
 
-                    if (hit.transform.CompareTag("whatIsGround") | hit.transform.CompareTag("buildingZone")) //if hit ground
+                    if (hit.transform.CompareTag("buildingZone"))
                     {
-                        towerIndicator.transform.position = towerPosition;
-
-                        if (hit.transform.CompareTag("buildingZone"))
-                        {
-                            canPlaceTower= true;
-                        }
-                        else
+                        canPlaceTower = true;
+                    }
+                    else
                     {
                         canPlaceTower = false;
                     }
-                    }
                 }
+            }
             if (Input.GetKeyDown(KeyCode.Mouse1)) //close when right mouse button
             {
                 isPlacingTower = false;
@@ -174,7 +184,43 @@ public class PlayerMovement : MonoBehaviour
                 placeTower(towerIndicator.transform);
 
             }
-        }  
+        }
+
+        //Upgrade
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (!isUpgrading)
+            {
+                if (Physics.Raycast(ray, out hit)) //if hit
+                {
+                    Vector3 towerPosition = hit.point;
+                    //Terrain terrain = hit.transform.GetComponent<Terrain>();
+                    float distanceToTower = towerPosition.x - gameObject.transform.position.x;
+
+                    if (hit.transform.CompareTag("tower")) //if hit tower
+                    {
+                        if (distanceToTower <= 20 && distanceToTower >= -20)
+                        {
+                            upgradeUI.SetActive(true);
+                            isUpgrading= true;
+
+                        }
+
+                    }
+
+                }
+            }
+            else
+            {
+                upgradeUI.SetActive(false);
+                isUpgrading= false;
+            }
+        }      
     }
 
     private void MovePlayer()
