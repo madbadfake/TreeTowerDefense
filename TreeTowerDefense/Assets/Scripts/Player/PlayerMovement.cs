@@ -48,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
     //upgrading
     private bool isUpgrading = false;
     private bool canUpgrade = false;
+    public GameObject selectedTower;
 
     GameObject upgradeUI;
 
@@ -206,6 +207,7 @@ public class PlayerMovement : MonoBehaviour
                     {
                         if (distanceToTower <= 20 && distanceToTower >= -20)
                         {
+                            selectedTower = hit.transform.gameObject;
                             upgradeUI.SetActive(true);
                             isUpgrading= true;
 

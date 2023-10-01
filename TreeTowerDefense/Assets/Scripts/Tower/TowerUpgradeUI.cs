@@ -8,18 +8,23 @@ public class TowerUpgradeUI : MonoBehaviour
     public Button[] upgradeButtons;
     private int buttonIndex = 0;
 
-    public GameObject tower;
+    private GameObject wolpertinger;
+    private GameObject tower; 
     // Start is called before the first frame update
     void Start()
     {
-
+        wolpertinger = GameObject.Find("Wolpertinger");
+        
         SelectButton(buttonIndex);
+
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        tower = wolpertinger.GetComponent<PlayerMovement>().selectedTower;
+
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0)
         {
@@ -36,8 +41,16 @@ public class TowerUpgradeUI : MonoBehaviour
 
     public void UpgradeTower(int index)
     {
-        if(index == 0) Debug.Log("upgrading dmg");
-        else if(index == 1) Debug.Log("upgrading firerate");
+        if (tower != null)
+        {
+            tower.GetComponent<Tower>().UpgradeSelf(index);
+            Debug.Log("upgrading");
+        }
+        else
+        {
+            return;
+        }
+
     }
 
     public void SelectButton(int index)

@@ -14,6 +14,7 @@ public class Tower : MonoBehaviour
     //[SerializeField] private float fireRate = 1f;
     [SerializeField] private float fireCD = 3f;
     [SerializeField] private float fireTimer = 0f;
+    [SerializeField] private float damage = 1f;
 
     [Header("UnitySetup")]
 
@@ -22,11 +23,14 @@ public class Tower : MonoBehaviour
 
     GameObject nearestEnemy = null;
 
+    GameObject UpgradeUI;
+
     //shooting
 
     // Start is called before the first frame update
     void Start()
     {
+        UpgradeUI = GameObject.Find("UpgradeCanvas");
         fireTimer= 3f;
         InvokeRepeating("UpdateTarget", 0f, 0.01f);
     }
@@ -97,6 +101,7 @@ public class Tower : MonoBehaviour
 
         GameObject bulletGO = (GameObject)Instantiate(projectile, transform.position, Quaternion.identity);
         ProjectileMovement bullet = bulletGO.GetComponent<ProjectileMovement>();
+        bullet.damage = damage;
 
 
         if (bullet != null )
@@ -109,7 +114,17 @@ public class Tower : MonoBehaviour
 
         nearestEnemy = null;
         fireTimer= fireCD;
+    }
 
-
+    public void UpgradeSelf(int upgradePath)
+    {
+        if(upgradePath == 0) //dmg
+        {
+            damage += 1;
+        }
+        else
+        {
+            fireCD -= 0.5f;
+        }
     }
 }
