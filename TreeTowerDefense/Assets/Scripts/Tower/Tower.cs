@@ -25,6 +25,11 @@ public class Tower : MonoBehaviour
 
     GameObject UpgradeUI;
 
+    //upgrade
+
+    public int[] upgradeCost = { 4, 20 };
+    public int[] upggradeCostIncrease = { 4, 20 };
+
     //shooting
 
     // Start is called before the first frame update
@@ -120,11 +125,16 @@ public class Tower : MonoBehaviour
     {
         if(upgradePath == 0) //dmg
         {
-            damage += 1;
+            damage += 2;
+            gameObject.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
+            upgradeCost[upgradePath] += upggradeCostIncrease[upgradePath];
+
         }
         else
         {
             fireCD -= 0.5f;
+            gameObject.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
+            upgradeCost[upgradePath] += upggradeCostIncrease[upgradePath];
         }
     }
 }
