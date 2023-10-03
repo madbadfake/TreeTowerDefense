@@ -8,7 +8,12 @@ public class EnemySpawner : MonoBehaviour
     public int enemyIndex = 0;
     public float spawnInterval = 3.0f; // Time interval between enemy spawns
     private float timer = 0.0f;
+    public int enemyCount;
+
+    //wave
+
     
+
 
     private Transform spawnPoint; //waypoint
 
@@ -21,6 +26,7 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
+        enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
         // Increment the timer
         timer += Time.deltaTime;
 
