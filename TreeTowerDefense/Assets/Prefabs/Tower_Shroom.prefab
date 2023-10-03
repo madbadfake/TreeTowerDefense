@@ -436,10 +436,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  range: 5
+  range: 20
   fireCD: 3
   fireTimer: 0
+  damage: 1
   projectile: {fileID: 1301458947030459575, guid: 5f9277006ad09d844bd1ba386f02bde5, type: 3}
+  upgradeCost: 0400000014000000
+  upggradeCostIncrease: 0400000014000000
 --- !u!64 &-3286982317300347945
 MeshCollider:
   m_ObjectHideFlags: 0
