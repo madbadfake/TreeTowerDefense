@@ -27,7 +27,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("EditScene");
+        SceneManager.LoadScene("NewTerrain");
     }
 
     public void Options()
